@@ -2,13 +2,17 @@ const requireDirectory = require("require-directory")
 const Router = require("koa-router")
 
 class InitManager{
-    static initLoadRouters(app){
+    static initCore(app){
+        InitManager.app = app
+        InitManager.initLoadRouters();
+    }
+    static initLoadRouters(){
         const apiDirectory = `${process.cwd()}/app/api`;
         requireDirectory(module,apiDirectory,{visit:whenLoadModule})
 
         function whenLoadModule(obj){
             if(obj instanceof Router){
-                app.use(obj.routes());
+                InitManager.app.use(obj.routes());
             }
         }
     }

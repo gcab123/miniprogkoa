@@ -2,10 +2,16 @@
 const Koa = require("koa");
 const parser = require("koa-bodyparser")
 const InitManager = require("./core/init")
+const catchError = require("./middlewares/exception")
 const app = new Koa();
 
+//最外层调用
+app.use(catchError);
+
 app.use(parser())
-InitManager.initLoadRouters(app);
+
+InitManager.initCore(app);
+
 // app.use(book.routes())
 // app.use(classic.routes())
 
